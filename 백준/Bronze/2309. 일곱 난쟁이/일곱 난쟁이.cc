@@ -5,41 +5,41 @@
 
 using namespace std;
 
-vector<int> findDwarfs(const vector<int>& dwarfs) {
-    int total = accumulate(dwarfs.begin(), dwarfs.end(), 0);
-
-    for (int i = 0; i < 9; i++) {
-        for (int j = i + 1; j < 9; j++) {
-            if (total - dwarfs[i] - dwarfs[j] == 100) {
-                vector<int> realDwarfs;
-
-                for (int k = 0; k < 9; ++k) {
-                    if (k != i && k != j) {
-                        realDwarfs.push_back(dwarfs[k]);
-                    }
-                }
-                return realDwarfs;
-            }
-        }
-    }
-}
-
 int main() {
     vector<int> dwarfs(9);
-
-    // 입력 받기
-    for (int& x : dwarfs) {
-        cin >> x;
+    for (int& h : dwarfs) {
+        cin >> h;
     }
 
-    // 정답 7명을 함수로부터 받아옴
-    vector<int> result = findDwarfs(dwarfs);
+    int total = accumulate(dwarfs.begin(), dwarfs.end(), 0);
 
-    // 정렬 후 출력
+    // 마스크: 7명 선택 (0), 2명 제외 (1)
+    vector<int> mask = {0, 0, 0, 0, 0, 0, 0, 1, 1};
+
+    vector<int> result;
+
+    do {
+        int sum = 0;
+        vector<int> temp;
+
+        for (int i = 0; i < 9; ++i) {
+            if (mask[i] == 0) {
+                sum += dwarfs[i];
+                temp.push_back(dwarfs[i]);
+            }
+        }
+
+        if (sum == 100) {
+            result = temp;
+            break;
+        }
+
+    } while (next_permutation(mask.begin(), mask.end()));
+
     sort(result.begin(), result.end());
 
-    for (const int& x : result) {
-        cout << x << '\n';
+    for (int h : result) {
+        cout << h << '\n';
     }
 
     return 0;
